@@ -2,6 +2,7 @@ package kurut0_Calculator;
 
 import java.awt.*;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.InputStream;
 import java.text.DecimalFormat;
@@ -31,11 +32,11 @@ public class GUI extends JFrame {
 
     public GUI() {
 
-        ImageIcon ico = new ImageIcon("Icon\\calculator.png");
+
 
         this.setTitle("Calculator | Developed by カート　コロニア");
         this.setSize(389, 450);
-        this.setIconImage(ico.getImage());
+        this.setIconImage(jframeIco().getImage());
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -84,6 +85,17 @@ public class GUI extends JFrame {
         opsBtn(subBtn,"-");
         setBtn(equal,227,312,144);
         opsBtn(equal,"=");
+    }
+
+    ImageIcon jframeIco() {
+        try {
+            InputStream is = GUI.class.getResourceAsStream("Icon\\calculator.png");
+            return new ImageIcon(ImageIO.read(is));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     void setBtn(JButton btn, int x, int y, int width) {
