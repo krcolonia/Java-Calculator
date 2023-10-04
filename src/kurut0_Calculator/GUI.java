@@ -30,8 +30,12 @@ public class GUI extends JFrame {
             clr = new JButton("C");
 
     public GUI() {
+
+        ImageIcon ico = new ImageIcon("Icon\\calculator.png");
+
         this.setTitle("Calculator | Developed by カート　コロニア");
         this.setSize(389, 450);
+        this.setIconImage(ico.getImage());
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
