@@ -90,6 +90,7 @@ public class GUI extends JFrame {
     ImageIcon jframeIco() {
         try {
             InputStream is = GUI.class.getResourceAsStream("Icon\\calculator.png");
+            assert is != null;
             return new ImageIcon(ImageIO.read(is));
         }
         catch (IOException e) {
