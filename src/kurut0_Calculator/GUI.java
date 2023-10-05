@@ -89,7 +89,7 @@ public class GUI extends JFrame {
 
     ImageIcon jframeIco() {
         try {
-            InputStream is = GUI.class.getResourceAsStream("Icon\\calculator.png");
+            InputStream is = GUI.class.getResourceAsStream("\\Icon\\calculator.png");
             assert is != null;
             return new ImageIcon(ImageIO.read(is));
         }
@@ -266,12 +266,12 @@ public class GUI extends JFrame {
         try {
             switch(fontFam) {
                 case "digi" -> {
-                    InputStream digiIS = GUI.class.getResourceAsStream("Fonts\\digital.ttf");
+                    InputStream digiIS = GUI.class.getResourceAsStream("\\Fonts\\digital.ttf");
                     assert digiIS != null;
                     return Font.createFont(Font.TRUETYPE_FONT, digiIS).deriveFont(65f);
                 }
                 case "heav" -> {
-                    InputStream heavIS = GUI.class.getResourceAsStream("Fonts\\heavitas.ttf");
+                    InputStream heavIS = GUI.class.getResourceAsStream("\\Fonts\\heavitas.ttf");
                     assert heavIS != null;
                     return Font.createFont(Font.TRUETYPE_FONT, heavIS).deriveFont(15f);
                 }
