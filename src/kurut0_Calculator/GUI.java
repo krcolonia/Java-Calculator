@@ -89,9 +89,12 @@ public class GUI extends JFrame {
 
     ImageIcon jframeIco() {
         try {
-            InputStream is = GUI.class.getResourceAsStream("\\Icon\\calculator.png");
-            assert is != null;
-            return new ImageIcon(ImageIO.read(is));
+            InputStream is = getClass().getClassLoader().getResourceAsStream("calculator.png");
+            if(is != null) {
+                return new ImageIcon(ImageIO.read(is));
+            }
+            else
+                return null;
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -193,10 +196,10 @@ public class GUI extends JFrame {
                 if(!currInput.equals("Math ERROR") && currOp != null && opClkCnt == 2 && num2 != null) {
                     inout.setText("0");
                     switch (currOp) {
-                        case "*" -> num1 = Operations.mult(num1, num2);
-                        case "/" -> num1 = Operations.div(num1, num2);
-                        case "+" -> num1 = Operations.add(num1, num2);
-                        case "-" -> num1 = Operations.sub(num1, num2);
+                        case "*" -> num1 = kurut0_Calculator.Operations.mult(num1, num2);
+                        case "/" -> num1 = kurut0_Calculator.Operations.div(num1, num2);
+                        case "+" -> num1 = kurut0_Calculator.Operations.add(num1, num2);
+                        case "-" -> num1 = kurut0_Calculator.Operations.sub(num1, num2);
                     }
 
                     if(func.equals("=")) {
@@ -266,12 +269,12 @@ public class GUI extends JFrame {
         try {
             switch(fontFam) {
                 case "digi" -> {
-                    InputStream digiIS = GUI.class.getResourceAsStream("\\Fonts\\digital.ttf");
+                    InputStream digiIS = getClass().getClassLoader().getResourceAsStream("digital.ttf");
                     assert digiIS != null;
                     return Font.createFont(Font.TRUETYPE_FONT, digiIS).deriveFont(65f);
                 }
                 case "heav" -> {
-                    InputStream heavIS = GUI.class.getResourceAsStream("\\Fonts\\heavitas.ttf");
+                    InputStream heavIS = getClass().getClassLoader().getResourceAsStream("heavitas.ttf");
                     assert heavIS != null;
                     return Font.createFont(Font.TRUETYPE_FONT, heavIS).deriveFont(15f);
                 }

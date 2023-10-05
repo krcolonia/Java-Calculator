@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class MainClass {
 
-    static GUI gui = new GUI();
+    static kurut0_Calculator.GUI gui = new kurut0_Calculator.GUI();
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
