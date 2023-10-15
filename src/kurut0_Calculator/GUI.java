@@ -126,7 +126,7 @@ public class GUI extends JFrame {
 
     /*
 
-    TODO: Optimize the if-else statements down below
+    TO-DO: Optimize the if-else statements down below
           they are so nested, even birds live in it
 
     */
