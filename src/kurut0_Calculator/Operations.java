@@ -18,3 +18,8 @@ public class Operations {
         return a - b;
     }
 }
+
+/*
+  Programmed by Kurt Robin P. Colonia
+  https://github.com/krcolonia
+ */

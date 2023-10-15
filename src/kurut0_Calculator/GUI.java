@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 
 public class GUI extends JFrame {
 
+    // DecimalFormat for the "screen" in the Calculator App. Only shows decimals when necessary
     DecimalFormat df = new DecimalFormat("#########.########");
 
     // Colors
@@ -31,9 +32,6 @@ public class GUI extends JFrame {
             clr = new JButton("C");
 
     public GUI() {
-
-
-
         this.setTitle("Calculator | Developed by カート　コロニア");
         this.setSize(389, 450);
         this.setIconImage(jframeIco().getImage());
@@ -87,14 +85,14 @@ public class GUI extends JFrame {
         opsBtn(equal,"=");
     }
 
+    // Finds app's icon and returns it, else if not found it returns a null value.
     ImageIcon jframeIco() {
         try {
             InputStream is = getClass().getClassLoader().getResourceAsStream("calculator.png");
-            if(is != null) {
-                return new ImageIcon(ImageIO.read(is));
-            }
-            else
+            if(is == null) {
                 return null;
+            }
+            return new ImageIcon(ImageIO.read(is));
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -102,6 +100,7 @@ public class GUI extends JFrame {
         return null;
     }
 
+    // Method used in setting the attributes of each passed button
     void setBtn(JButton btn, int x, int y, int width) {
         btn.setBounds(x,y,width, 70);
         btn.setFont(fontInit("heav"));
@@ -111,6 +110,8 @@ public class GUI extends JFrame {
         this.add(btn);
     }
 
+
+    // Method used in setting the attr of each passed numerical button
     void setNumBtn(JButton btn, int x, int y, String btnNum) {
         btn.setBounds(x, y, 70, 70);
         btn.setFont(fontInit("heav"));
@@ -121,27 +122,37 @@ public class GUI extends JFrame {
         this.add(btn);
     }
 
-    String currInput, currOp;
-    Float num1 = null, num2 = null, result = null;
+    // ------------------------------ MUST OPTIMIZE FROM THIS LINE FORTH ------------------------------//
 
+    /*
+
+    TODO: Optimize the if-else statements down below
+          they are so nested, even birds live in it
+
+    */
+
+    // Variables used in dealing with input and output
+    String currInput, // currInput is retrieved from current number on app's "screen"
+            currOp; // currOp holds the current operation that is being executed (i.e. Addition)
+    Float num1 = null, // num1 holds the first value in an operation
+            num2 = null, // num2 holds the second value in an operation
+            result = null; // result holds the result of the operation.
+
+    // method that sets the function of each passed button
     void btnFunc(JButton btn, String btnNum) {
         btn.addActionListener(e -> {
             try {
-                if(result != null) {
+                if(result != null) { // If the equals button is used
                     inout.setText("0");
                     result = null;
                 }
 
                 currInput = inout.getText();
-                if(!currInput.equals("Math ERROR")) {
-                    if(currInput.equals("0")) {
-                        if (!btnNum.equals("00"))
-                            inout.setText(btnNum);
-                    }
-                    else
-                        inout.setText(inout.getText() + btnNum);
 
-                }
+                if (!currInput.equals("Math ERROR") && !currInput.equals("0") && !currInput.equals("00"))
+                    inout.setText(inout.getText() + btnNum);
+                else if (!currInput.equals("Math ERROR") && currInput.equals("0") && !currInput.equals("00"))
+                    inout.setText(btnNum);
             }
             catch (Exception ex) {
                 ex.printStackTrace();
@@ -149,6 +160,7 @@ public class GUI extends JFrame {
         });
     }
 
+    // Method used to set the function of the decimal point button
     void decBtn(JButton btn) {
         btn.addActionListener(e -> {
            try{
@@ -173,22 +185,21 @@ public class GUI extends JFrame {
         });
     }
 
-    int opClkCnt = 1;
+    int opClkCnt = 1; // integer used as a counter for how many times an operation button is pressed
 
+    // Method used to set the function of an operation button (ie. the button for Multiplication)
     void opsBtn(JButton btn, String func) {
         btn.addActionListener(e -> {
             try {
                 currInput = inout.getText();
 
-                if(!currInput.equals("Math ERROR")) {
-                    if (opClkCnt == 1) {
-                        num1 = Float.parseFloat(currInput);
-                        inout.setText("0");
-                        opClkCnt++;
-                    } else {
-                        if(Float.parseFloat(currInput) != num1)
-                            num2 = Float.parseFloat(currInput);
-                    }
+                if(opClkCnt == 1 && !currInput.equals("Math ERROR")) {
+                    num1 = Float.parseFloat(currInput);
+                    inout.setText("0");
+                    opClkCnt++;
+                }
+                else if (opClkCnt != 1 && !currInput.equals("Math ERROR") && Float.parseFloat(currInput) != num1) {
+                    num2 = Float.parseFloat(currInput);
                 }
 
                 System.out.println(num1 + "\n" + num2 + "\n" + opClkCnt);
@@ -196,10 +207,10 @@ public class GUI extends JFrame {
                 if(!currInput.equals("Math ERROR") && currOp != null && opClkCnt == 2 && num2 != null) {
                     inout.setText("0");
                     switch (currOp) {
-                        case "*" -> num1 = kurut0_Calculator.Operations.mult(num1, num2);
-                        case "/" -> num1 = kurut0_Calculator.Operations.div(num1, num2);
-                        case "+" -> num1 = kurut0_Calculator.Operations.add(num1, num2);
-                        case "-" -> num1 = kurut0_Calculator.Operations.sub(num1, num2);
+                        case "*" -> num1 = Operations.mult(num1, num2);
+                        case "/" -> num1 = Operations.div(num1, num2);
+                        case "+" -> num1 = Operations.add(num1, num2);
+                        case "-" -> num1 = Operations.sub(num1, num2);
                     }
 
                     if(func.equals("=")) {
@@ -211,14 +222,6 @@ public class GUI extends JFrame {
                             inout.setText(df.format(result));
                         }
                     }
-
-                    if (num1.isInfinite()) {
-                        inout.setText("Math ERROR");
-                    }
-                    else {
-                        result = num1;
-                        inout.setText(df.format(result));
-                    }
                     num2 = null;
                 }
                 currOp = func;
@@ -229,14 +232,15 @@ public class GUI extends JFrame {
         });
     }
 
+    // Method used to set the fucntion of the clear button
     void clrBtn(JButton btn) {
         btn.addActionListener(e -> {
-            try {
+            try { // sets all variables used in the operations back to null
                 num1 = null;
                 num2 = null;
                 result = null;
-                opClkCnt = 1;
-                inout.setText("0");
+                opClkCnt = 1; // Resets the counter of operation button clicks.
+                inout.setText("0"); // Sets the output panel's text to 0
             }
             catch (Exception ex) {
                 ex.printStackTrace();
@@ -244,19 +248,21 @@ public class GUI extends JFrame {
         });
     }
 
+    // Method used to set the function of the backspace button
     void delBtn(JButton btn) {
         btn.addActionListener(e -> {
             currInput = inout.getText();
             try {
-                if(!currInput.equals("Math ERROR") && result == null){
-                    if(currInput.equals("0"))
-                        inout.setText(currInput);
-                    else if(currInput.length() < 2)
-                        inout.setText("0");
-                    else {
-                        currInput = currInput.substring(0, currInput.length() - 1);
-                        inout.setText(currInput);
-                    }
+                if(currInput.equals("Math ERROR") || result != null)
+                    return;
+
+                if(currInput.equals("0"))
+                    inout.setText(currInput);
+                else if(currInput.length() < 2)
+                    inout.setText("0");
+                else {
+                    currInput = currInput.substring(0, currInput.length() - 1);
+                    inout.setText(currInput);
                 }
             }
             catch (Exception ex) {
@@ -265,15 +271,16 @@ public class GUI extends JFrame {
         });
     }
 
+    // method used to initialize the fonts used within the app.
     Font fontInit(String fontFam) {
         try {
             switch(fontFam) {
-                case "digi" -> {
+                case "digi" -> { // Digital-7 Font. Used in the inout Panel
                     InputStream digiIS = getClass().getClassLoader().getResourceAsStream("digital.ttf");
                     assert digiIS != null;
                     return Font.createFont(Font.TRUETYPE_FONT, digiIS).deriveFont(65f);
                 }
-                case "heav" -> {
+                case "heav" -> { // Heavitas Font. Used in the buttons
                     InputStream heavIS = getClass().getClassLoader().getResourceAsStream("heavitas.ttf");
                     assert heavIS != null;
                     return Font.createFont(Font.TRUETYPE_FONT, heavIS).deriveFont(15f);
@@ -287,3 +294,8 @@ public class GUI extends JFrame {
     }
 
 }
+
+/*
+  Programmed by Kurt Robin P. Colonia
+  https://github.com/krcolonia
+ */
